@@ -8,6 +8,6 @@ Ovo je **Fast Rest API** aplikacija izrađena **Python** programskom jeziku, slu
 * Pozicionirajte se u preuzeti direktorij
 * Napravite virtualno okruženje: **python -m venv venv**
 * Aktivirajte virtualno okruženje: **.\venv\Scripts\Activate**
-* Instalirajte preduvijete za korištenje: **pip install -r requirements.txt**
-* Pokrenite aplikaciju pomoču: **uvicorn app:app --reload**
+* Instalirajte preduvjete za korištenje: **pip install -r requirements.txt**
+* Pokrenite aplikaciju pomoću: **uvicorn app:app --reload**
 
