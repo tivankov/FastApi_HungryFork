@@ -7,7 +7,6 @@ from typing import List
 from pymongo import MongoClient
 from bson import ObjectId
 
-
 app = FastAPI()
 
 # Spajanje na mongo bazu podataka
@@ -26,19 +25,19 @@ class MenuItemDb(MenuItemIn):
 
 # API rute do menija
 @app.post("/menu/", response_model=MenuItemDb)
-async def create_menu_item(menu_item_in: MenuItemIn):
+async def create_menu_item(menu_item_in: MenuItemIn, user: dict = Depends(security.active_user)):
     new_menu_item = MenuItemDb(**menu_item_in.dict())
     result = collection.insert_one(new_menu_item.dict())
     new_menu_item.id = str(result.inserted_id)
     return new_menu_item
 
 @app.get("/menu/", response_model=List[MenuItemDb])
-async def read_menu():
+async def read_menu(user: dict = Depends(security.authentication)):
     menu_items = list(collection.find())
     return menu_items
 
 @app.get("/menu/{item_id}", response_model=MenuItemDb)
-async def read_menu_item(item_id: str):
+async def read_menu_item(item_id: str, user: dict = Depends(security.authentication)):
     menu_item = collection.find_one({"_id": ObjectId(item_id)})
     if menu_item:
         return MenuItemDb(**menu_item)
@@ -46,7 +45,7 @@ async def read_menu_item(item_id: str):
         raise HTTPException(status_code=404, detail="Menu item not found")
 
 @app.delete("/menu/{item_id}", response_model=MenuItemDb)
-async def delete_menu_item(item_id: str):
+async def delete_menu_item(item_id: str, user: dict = Depends(security.authentication)):
     menu_item = collection.find_one({"_id": ObjectId(item_id)})
     if menu_item:
         collection.delete_one({"_id": ObjectId(item_id)})
