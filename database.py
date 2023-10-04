@@ -1,17 +1,13 @@
 from fastapi import FastAPI, HTTPException, Depends, Body
-from pymongo import MongoClient
+from typing import List
 from bson import ObjectId
 from pydantic import BaseModel
 import motor.motor_asyncio
 from dotenv import load_dotenv
 import os
+from database import menu_collection
 
 load_dotenv()
-
-mongo_uri = os.getenv("MONGODB_URI")
-mongodb_client = motor.motor_asyncio.AsyncIOMotorClient(mongo_uri)
-db = mongodb_client["hungry_fork"]
-menu_collection = db["menu_items"]
 
 app = FastAPI()
 
